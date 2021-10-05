@@ -1,22 +1,64 @@
 {
   "paragraphs": [
     {
-      "text": "%python.ipython\n\nimport pandas as pd\n",
+      "text": "%python\r\n\r\nimport pandas as pd\r\nimport requests\r\nimport json\r\n\r\nv_ris_url = 'https://ris-oparl.itk-rheinland.de/Oparl/bodies/0015'\r\n\r\nresponse = requests.get(v_ris_url)\r\n\r\nd_response_json = response.json()\r\n\r\n# print(d_response_json)\r\n# d_size = len(d_response_json)\r\n# print(d_size)\r\n\r\nl_response_keys = list(d_response_json.keys())\r\n\r\nl_relevant_keys = l_response_keys[8:12]\r\n\r\nl_response_keys\r\n\r\nl_response_dicts = []\r\n\r\nfor k in range(len(l_relevant_keys)):\r\n    v_url = d_response_json.get(l_relevant_keys[k])\r\n    response = requests.get(v_url)\r\n    d_json = response.json()\r\n    l_response_dicts.append(d_json)\r\n\r\nl_keys_df_col_names = ['PAPER_REFERENCE', 'PAPER_NAME',  'PAPER_TYPE', 'DATE', 'DOWNLOAD_URL', 'ID']\r\ndf_papers = pd.DataFrame(columns = l_keys_df_col_names)\r\ndf_papers.head(5)\r\n\r\nl_papers_json = l_response_dicts[3].get('data')\r\n\r\nfor p in range(len(l_papers_json)): # loop over the number of papers found in the response object\r\n    \r\n    if l_papers_json[p].get('deleted') != None:   # check if this is a \"deleted\" and thus empty entry\r\n        continue\r\n        \r\n    l_row_values =[]\r\n    l_row_values.append(l_papers_json[p].get('reference'))\r\n    l_row_values.append(l_papers_json[p].get('name'))\r\n    l_row_values.append(l_papers_json[p].get('paperType'))\r\n    l_row_values.append(l_papers_json[p].get('date'))\r\n    \r\n    l_aux_url = (l_papers_json[p].get('mainFile')) # accessUrl is packaged in seperate mainFile dictionary\r\n    l_row_values.append(l_aux_url.get('downloadUrl'))\r\n\r\n    l_row_values.append(l_papers_json[p].get('id'))\r\n    \r\n    # zipping key and value lists to dictionary and append as new row to df_out\r\n    d_new_row = dict(zip(l_keys_df_col_names, l_row_values))\r\n    # print(d_new_row)\r\n    df_papers = df_papers.append(d_new_row, ignore_index = True)\r\n\r\ndf_papers.head(20)\r\n",
       "user": "anonymous",
-      "dateUpdated": "2021-10-05 22:52:25.410",
+      "dateUpdated": "2021-09-01T11:11:08+0200",
       "progress": 0,
       "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "results": {},
+        "enabled": true,
         "editorSetting": {
           "language": "python",
           "editOnDblClick": false,
-          "completionSupport": true,
-          "completionKey": "TAB"
+          "completionSupport": true
         },
-        "colWidth": 12.0,
-        "editorMode": "ace/mode/python",
-        "fontSize": 9.0,
+        "tableHide": false,
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>PAPER_REFERENCE</th>\n      <th>PAPER_NAME</th>\n      <th>PAPER_TYPE</th>\n      <th>DATE</th>\n      <th>DOWNLOAD_URL</th>\n      <th>ID</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>BV3/124/2021</td>\n      <td>Fußweg zwischen Moorenplatz und Christophstraß...</td>\n      <td>Anfrage</td>\n      <td>2021-08-31</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>BV3/123/2021</td>\n      <td>Gestaltung Bahnunterführung Ellerstraße (Anfra...</td>\n      <td>Anfrage</td>\n      <td>2021-08-31</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>ABA/021/2021</td>\n      <td>Bekanntgabe des Sachstandes der bereits im Aus...</td>\n      <td>Bezirksvertretung Informationsvorlage</td>\n      <td>2021-08-28</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>AGS/064/2021</td>\n      <td>Mittelverwendung aus dem Produkt 41 414 01 Kon...</td>\n      <td>Beschlussvorlage</td>\n      <td>2021-08-27</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>AUS/071/2021</td>\n      <td>Änderungsantrag der SPD-Ratsfraktion zu TOP 4....</td>\n      <td>Antrag SPD/Volt</td>\n      <td>2021-08-31</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>5</th>\n      <td>AGS/063/2021</td>\n      <td>Umwidmung der Zuschussmittel für den Düsseldor...</td>\n      <td>Beschlussvorlage</td>\n      <td>2021-08-27</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>6</th>\n      <td>BV1/190/2021</td>\n      <td>Bauarbeiten im Bereich Worringer Platz - Anfra...</td>\n      <td>Anfrage</td>\n      <td>2021-08-27</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>7</th>\n      <td>BV1/189/2021</td>\n      <td>Bauarbeiten auf der Nordstraße - Anfrage der S...</td>\n      <td>Anfrage</td>\n      <td>2021-08-27</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>8</th>\n      <td>BV1/188/2021</td>\n      <td>Anpassung des Schaltzeitpunkts der Lichtzeiche...</td>\n      <td>Antrag</td>\n      <td>2021-08-27</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n    <tr>\n      <th>9</th>\n      <td>BV1/187/2021</td>\n      <td>Was wird aus der öffentlichen Nutzung der Kape...</td>\n      <td>Antrag</td>\n      <td>2021-08-27</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n      <td>http://ris-oparl.itk-rheinland.de/Oparl/bodies...</td>\n    </tr>\n  </tbody>\n</table>\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1621459581995_1788925701",
+      "id": "paragraph_1621459581995_1788925701",
+      "dateCreated": "2021-05-19T23:26:21+0200",
+      "dateStarted": "2021-09-01T11:11:08+0200",
+      "dateFinished": "2021-09-01T11:11:14+0200",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:2418"
+    },
+    {
+      "text": "",
+      "user": "anonymous",
+      "dateUpdated": "2021-05-19T23:27:36+0200",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
         "results": {},
-        "enabled": true
+        "enabled": true,
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
       },
       "settings": {
         "params": {},
@@ -25,21 +67,25 @@
       "apps": [],
       "runtimeInfos": {},
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1633467056919_112305260",
-      "id": "paragraph_1633467056919_112305260",
-      "dateCreated": "2021-10-05 22:50:56.920",
-      "status": "READY"
+      "jobName": "paragraph_1621459654687_1758106739",
+      "id": "paragraph_1621459654687_1758106739",
+      "dateCreated": "2021-05-19T23:27:34+0200",
+      "status": "READY",
+      "$$hashKey": "object:2419"
     }
   ],
-  "name": "RIS demo",
-  "id": "2GM3FMH8A",
+  "name": "RIS_test1",
+  "id": "2G6AWGGPS",
   "defaultInterpreterGroup": "python",
-  "version": "0.11.0-SNAPSHOT",
+  "version": "0.9.0",
   "noteParams": {},
   "noteForms": {},
   "angularObjects": {},
   "config": {
-    "isZeppelinNotebookCronEnable": false
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
   },
-  "info": {}
+  "info": {},
+  "path": "/RIS_test1"
 }
