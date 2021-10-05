@@ -1,0 +1,45 @@
+{
+  "paragraphs": [
+    {
+      "text": "%python.ipython\n\nimport pandas as pd\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-10-05 22:52:25.410",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1633467056919_112305260",
+      "id": "paragraph_1633467056919_112305260",
+      "dateCreated": "2021-10-05 22:50:56.920",
+      "status": "READY"
+    }
+  ],
+  "name": "RIS demo",
+  "id": "2GM3FMH8A",
+  "defaultInterpreterGroup": "python",
+  "version": "0.11.0-SNAPSHOT",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
